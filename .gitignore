@@ -1,0 +1,80 @@
+# ========================================
+# Unreal Engine Git Ignore
+# ========================================
+
+# Ignore binaries and build artifacts
+Binaries/
+Build/
+DerivedDataCache/
+Intermediate/
+Saved/
+*.pdb
+*.obj
+*.exe
+*.dll
+*.lib
+*.app
+*.so
+*.dylib
+
+# Ignore Unreal auto-generated content
+*.generated.*
+*.generated.h
+*_Backup/
+*_Autosaves/
+*.tmp
+*.tlog
+*.log
+*.cache
+*.user
+*.userprefs
+*.suo
+
+# Ignore IDE and editor settings
+.vs/
+.vscode/
+.idea/
+*.code-workspace
+*.sublime-project
+*.sublime-workspace
+*.VC.db
+*.VC.opendb
+*.opensdf
+*.sdf
+
+# Ignore OS junk
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Ignore compiled Python cache
+__pycache__/
+*.pyc
+
+# Ignore Unreal Launcher Vault content
+VaultCache/
+
+# Ignore optional Git LFS lock files
+*.lck
+
+# Ignore crash dumps
+*.dmp
+
+# Ignore backups and autosaves
+Backup/
+Autosaves/
+
+# Ignore temporary config overrides
+Config/DefaultEditorPerProjectUserSettings.ini
+Config/DefaultEditorUserSettings.ini
+
+# Ignore system files
+ehthumbs.db
+Icon?
+*.lnk
+*.bak
+*.old
+
+# ========================================
+# End of Unreal Engine Git Ignore
+# ========================================
