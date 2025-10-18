@@ -13,5 +13,8 @@ UCLASS()
 class SLIMEDEFENSE_API APlayerSlimeCharacter : public ATowerDefenseBaseCharacter
 {
 	GENERATED_BODY()
+
+protected:
+	virtual void BeginPlay() override;
 	
 };
