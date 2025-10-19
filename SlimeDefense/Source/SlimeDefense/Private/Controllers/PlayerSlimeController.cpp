@@ -3,3 +3,8 @@
 
 #include "Controllers/PlayerSlimeController.h"
 
+void APlayerSlimeController::BeginPlay()
+{
+	Super::BeginPlay();
+
+}

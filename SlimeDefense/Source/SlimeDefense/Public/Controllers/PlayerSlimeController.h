@@ -13,5 +13,8 @@ UCLASS()
 class SLIMEDEFENSE_API APlayerSlimeController : public APlayerController
 {
 	GENERATED_BODY()
+
+protected:
+	virtual void BeginPlay() override;
 	
 };

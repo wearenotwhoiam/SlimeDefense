@@ -6,9 +6,8 @@
 #include "Characters/TowerDefenseBaseCharacter.h"
 #include "PlayerSlimeCharacter.generated.h"
 
-/**
- * 
- */
+struct FInputActionValue;
+
 UCLASS()
 class SLIMEDEFENSE_API APlayerSlimeCharacter : public ATowerDefenseBaseCharacter
 {
@@ -18,6 +17,8 @@ public:
 	APlayerSlimeCharacter();
 
 protected:
+	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
+
 	virtual void BeginPlay() override;
 
 #pragma region Components
@@ -32,6 +33,16 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Camera", meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* FollowCamera;
+
+#pragma endregion
+
+
+#pragma region Input
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "CharacterData", meta = (AllowPrivateAccess = "true"))
+	class UDataAsset_InputConfig* InputConfigDataAsset;
+
+	void Input_Move(const FInputActionValue& InputActionValue);
+	void Input_Look(const FInputActionValue& InputActionValue);
 
 #pragma endregion
 };
