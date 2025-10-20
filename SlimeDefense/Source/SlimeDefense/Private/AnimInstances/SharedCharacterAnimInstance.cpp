@@ -25,8 +25,6 @@ void USharedCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 
 	const FVector CurrentVelocity = OwningPawn->GetVelocity();
 	GroundSpeed = CurrentVelocity.Size2D();
-
-	const FVector VelocityChange = (CurrentVelocity - LastVelocity) / DeltaSeconds;
-	bIsAccelerating = !VelocityChange.IsNearlyZero();
-	LastVelocity = CurrentVelocity;
+	bIsMoving = !CurrentVelocity.IsNearlyZero();
+	MovementAngle = CalculateDirection(CurrentVelocity, OwningPawn->GetActorRotation());
 }

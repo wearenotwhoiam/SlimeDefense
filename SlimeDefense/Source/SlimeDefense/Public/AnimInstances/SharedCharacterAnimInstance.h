@@ -28,7 +28,10 @@ protected:
 	float GroundSpeed;
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "AnimData|LocomotionData")
-	bool bIsAccelerating;
+	bool bIsMoving;
+
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "AnimData|LocomotionData")
+	float MovementAngle;
 
 	UPROPERTY()
 	FVector LastVelocity;
