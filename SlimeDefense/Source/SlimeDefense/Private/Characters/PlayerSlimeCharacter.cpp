@@ -11,19 +11,17 @@
 #include "SlimerGameplayTags.h"
 #include "InputActionValue.h"
 #include "EnhancedInputSubsystems.h"
-#include "GameFramework/PlayerController.h"
+#include "Controllers/PlayerSlimeController.h"
 #include "GameFramework/FloatingPawnMovement.h"
+#include "AbilitySystem/SlimerAbilitySystemComponent.h"
+#include "AbilitySystem/SlimerAttributeSet.h"
+#include "UI/HUD/TowerDefenseHUD.h"
+#include "Components/Combat/CombatComponent.h"
 
 #include "DebugHelper.h"
 
 APlayerSlimeCharacter::APlayerSlimeCharacter()
 {
-	BoxComp = CreateDefaultSubobject<UBoxComponent>(TEXT("Box Comp"));
-	SetRootComponent(BoxComp);
-
-	SlimeMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Skeletal Mesh"));
-	SlimeMesh->SetupAttachment(GetRootComponent());
-	
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("Camera Boom"));
 	CameraBoom->SetupAttachment(GetRootComponent());
 	CameraBoom->bUsePawnControlRotation = true;
@@ -33,7 +31,12 @@ APlayerSlimeCharacter::APlayerSlimeCharacter()
 	FollowCamera->bUsePawnControlRotation = false;
 
 	MovementComponent = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("MovementComponent"));
-	MovementComponent->MaxSpeed = 500.f;
+	MovementComponent->MaxSpeed = MaxSlimeWalkSpeed;
+
+	AbilitySystemComponent = CreateDefaultSubobject<USlimerAbilitySystemComponent>("AbilitySystemComponent");
+	AttributeSet = CreateDefaultSubobject<USlimerAttributeSet>("AttributeSet");
+
+	CombatComponent = CreateDefaultSubobject<UCombatComponent>(TEXT("CombatComponent"));
 }
 
 void APlayerSlimeCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -51,12 +54,38 @@ void APlayerSlimeCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInp
 	SlimerInputComponent->BindNativeInputAction(InputConfigDataAsset, SlimerGameplayTags::InputTag_Move, ETriggerEvent::Triggered, this, &ThisClass::Input_Move);
 	SlimerInputComponent->BindNativeInputAction(InputConfigDataAsset, SlimerGameplayTags::InputTag_Move, ETriggerEvent::Ongoing, this, &ThisClass::Input_Move);
 
-
+	SlimerInputComponent->BindAbilityInputAction(InputConfigDataAsset, this, &ThisClass::AbilityInputTagPressed, &ThisClass::AbilityInputTagReleased, &ThisClass::AbilityInputTagHeld);
 }
 
 void APlayerSlimeCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+}
+
+void APlayerSlimeCharacter::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+
+	InitAbilityActorInfo();
+	AddCharacterAbilities();
+}
+
+void APlayerSlimeCharacter::InitAbilityActorInfo()
+{
+
+	if (AbilitySystemComponent)
+	{
+		AbilitySystemComponent->InitAbilityActorInfo(this, this);
+		Cast<USlimerAbilitySystemComponent>(AbilitySystemComponent)->AbilityActorInfoSet();
+	}
+
+	if (APlayerSlimeController* SlimePlayerController = Cast< APlayerSlimeController>(GetController()))
+	{
+		if (ATowerDefenseHUD* TowerDefenseHUD = Cast<ATowerDefenseHUD>(SlimePlayerController->GetHUD()))
+		{
+			TowerDefenseHUD->InitOverlay(SlimePlayerController, AbilitySystemComponent, AttributeSet);
+		}
+	}
 }
 
 void APlayerSlimeCharacter::Input_Move(const FInputActionValue& InputActionValue)
@@ -93,3 +122,28 @@ void APlayerSlimeCharacter::Input_Look(const FInputActionValue& InputActionValue
 		AddControllerPitchInput(-LookAxis.Y);
 	}
 }
+
+void APlayerSlimeCharacter::AbilityInputTagPressed(FGameplayTag InputTag)
+{
+	if (USlimerAbilitySystemComponent* SlimerASC = Cast<USlimerAbilitySystemComponent>(AbilitySystemComponent))
+	{
+		SlimerASC->AbilityInputTagHeld(InputTag);
+	}
+}
+
+void APlayerSlimeCharacter::AbilityInputTagReleased(FGameplayTag InputTag)
+{
+	if (USlimerAbilitySystemComponent* SlimerASC = Cast<USlimerAbilitySystemComponent>(AbilitySystemComponent))
+	{
+		SlimerASC->AbilityInputTagReleased(InputTag);
+	}
+}
+
+void APlayerSlimeCharacter::AbilityInputTagHeld(FGameplayTag InputTag)
+{
+	if (USlimerAbilitySystemComponent* SlimerASC = Cast<USlimerAbilitySystemComponent>(AbilitySystemComponent))
+	{
+		SlimerASC->AbilityInputTagHeld(InputTag);
+	}
+}
+
