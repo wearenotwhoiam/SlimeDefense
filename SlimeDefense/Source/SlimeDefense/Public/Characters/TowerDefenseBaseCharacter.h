@@ -5,6 +5,8 @@
 #include "CoreMinimal.h"
 #include "AbilitySystemInterface.h"
 #include "Interactions/CombatInterface.h"
+#include "GameplayEffect.h"
+
 #include "GameFramework/Pawn.h"
 #include "TowerDefenseBaseCharacter.generated.h"
 
@@ -45,6 +47,17 @@ protected:
 	virtual void InitAbilityActorInfo();
 
 	void AddCharacterAbilities();
+
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Attributes")
+	TSubclassOf<UGameplayEffect> DefaultPrimaryAttributes;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Attributes")
+	TSubclassOf<UGameplayEffect> DefaultSecondaryAttributes;
+
+	void ApplyEffectToSelf(TSubclassOf<UGameplayEffect> GameplayEffectClass, float Level) const;
+	void InitializeDefaultAttributes() const;
+
 private:
 
 	UPROPERTY(EditAnywhere, Category = "Abilities")

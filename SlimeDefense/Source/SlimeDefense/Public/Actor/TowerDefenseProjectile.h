@@ -4,11 +4,12 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "GameplayEffectTypes.h"
 #include "TowerDefenseProjectile.generated.h"
 
 class USphereComponent;
 class UProjectileMovementComponent;
-
+class UNiagaraSystem;
 UCLASS()
 class SLIMEDEFENSE_API ATowerDefenseProjectile : public AActor
 {
@@ -19,6 +20,9 @@ public:
 	ATowerDefenseProjectile();
 
 	TObjectPtr<UProjectileMovementComponent> ProjectileMovement;
+
+	UPROPERTY(BlueprintReadWrite, meta =(ExposeOnSpawn = true ))
+	FGameplayEffectSpecHandle DamageEffectSpecHandle;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -29,4 +33,10 @@ protected:
 private:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USphereComponent> Sphere;
+
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UNiagaraSystem> ImpactEffect;
+
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<USoundBase> ImpactSound;
 };

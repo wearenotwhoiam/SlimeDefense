@@ -3,12 +3,15 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Characters/TowerDefenseBaseCharacter.h"
-#include "EnemyBaseCharacter.generated.h"
 
+#include "Characters/TowerDefenseBaseCharacter.h"
+#include "UI/WidgetController/OverlayWidgetController.h"
+#include "EnemyBaseCharacter.generated.h"
 /**
  * 
  */
+class UWidgetComponent;
+
 UCLASS()
 class SLIMEDEFENSE_API AEnemyBaseCharacter : public ATowerDefenseBaseCharacter
 {
@@ -16,4 +19,18 @@ class SLIMEDEFENSE_API AEnemyBaseCharacter : public ATowerDefenseBaseCharacter
 
 public:
 	AEnemyBaseCharacter();
+
+	UPROPERTY(BlueprintAssignable)
+	FOnAttributeChangedSignature OnHealthChanged;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnAttributeChangedSignature OnMaxHealthChanged;
+
+protected:
+	void BeginPlay() override;
+
+	virtual void InitAbilityActorInfo() override;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	TObjectPtr<UWidgetComponent> HealthBar;
 };

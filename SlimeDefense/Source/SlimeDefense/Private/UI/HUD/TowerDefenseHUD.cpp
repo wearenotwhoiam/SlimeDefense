@@ -30,7 +30,7 @@ void ATowerDefenseHUD::InitOverlay(APlayerController* PC, UAbilitySystemComponen
 	const FWidgetControllerParams WidgetControllerParams(PC, ASC, AS);
 	UOverlayWidgetController* WidgetController = GetOverlayWidgetController(WidgetControllerParams);
 
-	OverlayWidget->SetWidgetControlller(WidgetController);
+	OverlayWidget->SetWidgetController(WidgetController);
 	WidgetController->BroadcastInitialValues();
 	Widget->AddToViewport();
 }

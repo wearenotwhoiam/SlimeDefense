@@ -7,6 +7,8 @@
 #include "TowerDefenseProjectileSpell.generated.h"
 
 class ATowerDefenseProjectile;
+class UNiagaraSystem;
+class UGameplayEffect;
 /**
  * 
  */
@@ -25,4 +27,6 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TSubclassOf<ATowerDefenseProjectile> ProjectileClass;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	TSubclassOf<UGameplayEffect> DamageEffectClass;
 };

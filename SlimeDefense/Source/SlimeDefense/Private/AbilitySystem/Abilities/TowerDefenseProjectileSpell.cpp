@@ -4,7 +4,9 @@
 #include "AbilitySystem/Abilities/TowerDefenseProjectileSpell.h"
 #include "Interactions/CombatInterface.h"
 #include "Actor/TowerDefenseProjectile.h"
-
+#include "Kismet/GameplayStatics.h"
+#include "AbilitySystemBlueprintLibrary.h"
+#include "AbilitySystem/SlimerAbilitySystemComponent.h"
 
 void UTowerDefenseProjectileSpell::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
@@ -19,7 +21,6 @@ void UTowerDefenseProjectileSpell::SpawnProjectile(const FVector ProjectileTarge
 		const FVector SocketLocation = CombatInterface->GetCombatSocketLocation();
 
 		FRotator Rotation = (ProjectileTargetLocation - SocketLocation).Rotation();
-		Rotation.Pitch = 0;
 
 		if (!ProjectileClass) return;
 
@@ -36,7 +37,9 @@ void UTowerDefenseProjectileSpell::SpawnProjectile(const FVector ProjectileTarge
 				ESpawnActorCollisionHandlingMethod::AlwaysSpawn
 			);
 
-		//Give projectile a gameplay effect spec for causing damage
+		const UAbilitySystemComponent* SourceASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetAvatarActorFromActorInfo());
+		const FGameplayEffectSpecHandle SpecHandle = SourceASC->MakeOutgoingSpec(DamageEffectClass, GetAbilityLevel(), SourceASC->MakeEffectContext());
+		Projectile->DamageEffectSpecHandle = SpecHandle;
 
 		Projectile->FinishSpawning(SpawnTransform);
 	}

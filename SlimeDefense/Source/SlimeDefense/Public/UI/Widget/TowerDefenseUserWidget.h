@@ -15,7 +15,7 @@ class SLIMEDEFENSE_API UTowerDefenseUserWidget : public UUserWidget
 	GENERATED_BODY()
 public:
 	UFUNCTION(BlueprintCallable)
-	void SetWidgetControlller(UObject* InWidgetController);
+	void SetWidgetController(UObject* InWidgetController);
 
 	UPROPERTY(BlueprintReadOnly)
 	TObjectPtr<UObject> WidgetController;

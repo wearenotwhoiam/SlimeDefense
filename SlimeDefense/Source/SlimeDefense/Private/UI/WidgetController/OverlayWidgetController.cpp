@@ -3,7 +3,7 @@
 
 #include "UI/WidgetController/OverlayWidgetController.h"
 #include "UI/Widget/TowerDefenseUserWidget.h"
-
+#include "AbilitySystem/SlimerAbilitySystemComponent.h"
 #include "AbilitySystem/SlimerAttributeSet.h"
 #include "DebugHelper.h"
 
@@ -25,11 +25,38 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 	const USlimerAttributeSet* TowerDefenseAttributeSet = CastChecked<USlimerAttributeSet>(AttributeSet);
 
 	
-	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(TowerDefenseAttributeSet->GetCurrentHealthAttribute()).AddUObject(this, &UOverlayWidgetController::HealthChanged);
-	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(TowerDefenseAttributeSet->GetMaxHealthAttribute()).AddUObject(this, &UOverlayWidgetController::MaxHealthChanged);
+	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
+		TowerDefenseAttributeSet->GetCurrentHealthAttribute()).AddLambda(
+			[this](const FOnAttributeChangeData& Data) 
+			{
+				OnHealthChanged.Broadcast(Data.NewValue);
+			}
+		);
 	
-	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(TowerDefenseAttributeSet->GetCurrentManaAttribute()).AddUObject(this, &UOverlayWidgetController::ManaChanged);
-	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(TowerDefenseAttributeSet->GetMaxManaAttribute()).AddUObject(this, &UOverlayWidgetController::MaxManaChanged);
+	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
+		TowerDefenseAttributeSet->GetMaxHealthAttribute()).AddLambda(
+			[this](const FOnAttributeChangeData& Data)
+			{
+				OnMaxHealthChanged.Broadcast(Data.NewValue);
+			}
+		);
+	
+	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
+		TowerDefenseAttributeSet->GetCurrentManaAttribute()).AddLambda(
+			[this](const FOnAttributeChangeData& Data)
+			{
+				OnManaChanged.Broadcast(Data.NewValue);
+			}
+		);
+	
+	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
+		TowerDefenseAttributeSet->GetMaxManaAttribute()).AddLambda(
+			[this](const FOnAttributeChangeData& Data)
+			{
+				OnMaxManaChanged.Broadcast(Data.NewValue);
+			}
+		);
+
 
 	Cast<USlimerAbilitySystemComponent>(AbilitySystemComponent)->EffectAssetTags.AddLambda
 	(
@@ -43,27 +70,4 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 		}
 	);
 
-}
-
-
-void UOverlayWidgetController::HealthChanged(const FOnAttributeChangeData& Data) const
-{
-	OnHealthChanged.Broadcast(Data.NewValue);
-}
-
-
-void UOverlayWidgetController::MaxHealthChanged(const FOnAttributeChangeData& Data) const
-{
-	OnMaxHealthChanged.Broadcast(Data.NewValue);
-
-}
-
-void UOverlayWidgetController::ManaChanged(const FOnAttributeChangeData& Data) const
-{
-	OnManaChanged.Broadcast(Data.NewValue);
-}
-
-void UOverlayWidgetController::MaxManaChanged(const FOnAttributeChangeData& Data) const
-{
-	OnMaxManaChanged.Broadcast(Data.NewValue);
 }

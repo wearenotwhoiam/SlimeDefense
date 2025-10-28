@@ -3,12 +3,8 @@
 
 #include "UI/Widget/TowerDefenseUserWidget.h"
 
-void UTowerDefenseUserWidget::SetWidgetControlller(UObject* InWidgetController)
+void UTowerDefenseUserWidget::SetWidgetController(UObject* InWidgetController)
 {
 	WidgetController = InWidgetController;
 	WidgetControllerSet();
 }
-
-//void UTowerDefenseUserWidget::WidgetControllerSet()
-//{
-//}

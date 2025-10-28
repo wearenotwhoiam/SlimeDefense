@@ -16,9 +16,13 @@ ATowerDefenseBaseCharacter::ATowerDefenseBaseCharacter()
 
 	BoxComp = CreateDefaultSubobject<UBoxComponent>(TEXT("Box Comp"));
 	SetRootComponent(BoxComp);
+	BoxComp->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
 
 	SkeletalMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Skeletal Mesh"));
 	SkeletalMesh->SetupAttachment(GetRootComponent());
+	SkeletalMesh->SetGenerateOverlapEvents(true);
+
+
 }
 
 UAbilitySystemComponent* ATowerDefenseBaseCharacter::GetAbilitySystemComponent() const
@@ -42,4 +46,20 @@ void ATowerDefenseBaseCharacter::AddCharacterAbilities()
 	USlimerAbilitySystemComponent* SlimerASC = CastChecked<USlimerAbilitySystemComponent>(AbilitySystemComponent);
 
 	SlimerASC->AddCharacterAbilities(StartupAbilities);
+}
+
+void ATowerDefenseBaseCharacter::ApplyEffectToSelf(TSubclassOf<UGameplayEffect> GameplayEffectClass, float Level) const
+{
+	check(IsValid(GetAbilitySystemComponent()));
+	check(GameplayEffectClass);
+	const FGameplayEffectContextHandle ContextHandle = GetAbilitySystemComponent()->MakeEffectContext();
+	const FGameplayEffectSpecHandle SpecHandle = GetAbilitySystemComponent()->MakeOutgoingSpec(GameplayEffectClass, Level, ContextHandle);
+	GetAbilitySystemComponent()->ApplyGameplayEffectSpecToTarget(*SpecHandle.Data.Get(), GetAbilitySystemComponent());
+}
+
+void ATowerDefenseBaseCharacter::InitializeDefaultAttributes() const
+{
+	ApplyEffectToSelf(DefaultSecondaryAttributes, 1);
+	ApplyEffectToSelf(DefaultPrimaryAttributes, 1);
+
 }

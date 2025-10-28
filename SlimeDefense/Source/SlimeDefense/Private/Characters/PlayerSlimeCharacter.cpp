@@ -86,6 +86,8 @@ void APlayerSlimeCharacter::InitAbilityActorInfo()
 			TowerDefenseHUD->InitOverlay(SlimePlayerController, AbilitySystemComponent, AttributeSet);
 		}
 	}
+
+	InitializeDefaultAttributes();
 }
 
 void APlayerSlimeCharacter::Input_Move(const FInputActionValue& InputActionValue)

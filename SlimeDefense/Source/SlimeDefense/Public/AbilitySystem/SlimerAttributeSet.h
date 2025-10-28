@@ -14,6 +14,31 @@ GAMEPLAYATTRIBUTE_VALUE_GETTER(PropertyName) \
 GAMEPLAYATTRIBUTE_VALUE_SETTER(PropertyName) \
 GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
 
+USTRUCT()
+struct FEffectProperties
+{
+	GENERATED_BODY()
+
+	FEffectProperties() {}
+	FGameplayEffectContextHandle EffectContextHandle;
+
+	UPROPERTY()
+	UAbilitySystemComponent* SourceASC = nullptr;
+	UPROPERTY()
+	UAbilitySystemComponent* TargetASC = nullptr;
+	UPROPERTY()
+	AActor* SourceAvatarActor = nullptr;
+	UPROPERTY()
+	AActor* TargetAvatarActor = nullptr;
+	UPROPERTY()
+	AController* SourceController = nullptr;
+	UPROPERTY()
+	AController* TargetController = nullptr;
+	UPROPERTY()
+	APawn* SourcePawn = nullptr;
+	UPROPERTY()
+	APawn* TargetPawn = nullptr;
+};
 
 UCLASS()
 class SLIMEDEFENSE_API USlimerAttributeSet : public UAttributeSet
@@ -23,19 +48,29 @@ class SLIMEDEFENSE_API USlimerAttributeSet : public UAttributeSet
 public:
 	USlimerAttributeSet();
 
+	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
+	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
+
+#pragma region VitalStats
 	UPROPERTY(BlueprintReadOnly, Category="Health")
 	FGameplayAttributeData CurrentHealth;
 	ATTRIBUTE_ACCESSORS(USlimerAttributeSet, CurrentHealth)
 
-	UPROPERTY(BlueprintReadOnly, Category = "Health")
-	FGameplayAttributeData MaxHealth;
-	ATTRIBUTE_ACCESSORS(USlimerAttributeSet, MaxHealth)
-	
 	UPROPERTY(BlueprintReadOnly, Category = "Mana")
 	FGameplayAttributeData CurrentMana;
 	ATTRIBUTE_ACCESSORS(USlimerAttributeSet, CurrentMana)
-	
+
+#pragma endregion
+
+#pragma region SecondaryStats
+	UPROPERTY(BlueprintReadOnly, Category = "Health")
+	FGameplayAttributeData MaxHealth;
+	ATTRIBUTE_ACCESSORS(USlimerAttributeSet, MaxHealth)
 	UPROPERTY(BlueprintReadOnly, Category = "Mana")
 	FGameplayAttributeData MaxMana;
 	ATTRIBUTE_ACCESSORS(USlimerAttributeSet, MaxMana)
+#pragma endregion
+
+private:
+	void SetEffectProperties(const FGameplayEffectModCallbackData& Data, FEffectProperties& Props);
 };
