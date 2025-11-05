@@ -69,9 +69,6 @@ void USlimerAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCall
 	if (Data.EvaluatedData.Attribute == GetCurrentHealthAttribute())
 	{
 		SetCurrentHealth(FMath::Clamp(GetCurrentHealth(), 0.f, GetMaxHealth()));
-
-		FString Yeet = FString::Printf(TEXT("Changed health on %s, Health: %f"), *Props.TargetAvatarActor->GetName(), GetCurrentHealth());
-		Debug::Print(Yeet);
 	}
 
 	if (Data.EvaluatedData.Attribute == GetCurrentManaAttribute())

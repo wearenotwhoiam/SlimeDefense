@@ -51,12 +51,32 @@ public:
 	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
 	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
 
+
+#pragma region PrimaryAttributes
+	UPROPERTY(BlueprintReadOnly, Category = "Primary Attributes")
+	FGameplayAttributeData Strength;
+	ATTRIBUTE_ACCESSORS(USlimerAttributeSet, Strength)
+
+	UPROPERTY(BlueprintReadOnly, Category = "Primary Attributes")
+	FGameplayAttributeData Intelligence;
+	ATTRIBUTE_ACCESSORS(USlimerAttributeSet, Intelligence)
+
+	UPROPERTY(BlueprintReadOnly, Category = "Primary Attributes")
+	FGameplayAttributeData Resilience;
+	ATTRIBUTE_ACCESSORS(USlimerAttributeSet, Resilience)
+
+	UPROPERTY(BlueprintReadOnly, Category = "Primary Attributes")
+	FGameplayAttributeData Vigor;
+	ATTRIBUTE_ACCESSORS(USlimerAttributeSet, Vigor)
+
+#pragma endregion
+
 #pragma region VitalStats
-	UPROPERTY(BlueprintReadOnly, Category="Health")
+	UPROPERTY(BlueprintReadOnly, Category="VitalStats")
 	FGameplayAttributeData CurrentHealth;
 	ATTRIBUTE_ACCESSORS(USlimerAttributeSet, CurrentHealth)
 
-	UPROPERTY(BlueprintReadOnly, Category = "Mana")
+	UPROPERTY(BlueprintReadOnly, Category = "VitalStats")
 	FGameplayAttributeData CurrentMana;
 	ATTRIBUTE_ACCESSORS(USlimerAttributeSet, CurrentMana)
 

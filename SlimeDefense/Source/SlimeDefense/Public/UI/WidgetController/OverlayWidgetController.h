@@ -8,7 +8,9 @@
 
 #include "OverlayWidgetController.generated.h"
 
-class UTowerDefenseUserWidget;
+
+class UDateTable;
+
 USTRUCT(BlueprintType)
 struct FUIWidgetRow : public FTableRowBase
 {
@@ -21,14 +23,15 @@ struct FUIWidgetRow : public FTableRowBase
 	FText Message = FText();
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	TSubclassOf<UTowerDefenseUserWidget> MessageWidget;
+	TSubclassOf<class UTowerDefenseUserWidget> MessageWidget;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	UTexture2D* Image = nullptr;
 };
 
+class UTowerDefenseUserWidget;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAttributeChangedSignature, float, NewValue);
-
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FMessageWidgetRowSignature, FUIWidgetRow, Row);
 
 UCLASS(Blueprintable, BlueprintType)
 class SLIMEDEFENSE_API UOverlayWidgetController : public UTowerDefenseWidgetController
@@ -48,4 +51,19 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "GAS|Attributes")
 	FOnAttributeChangedSignature OnMaxManaChanged;
 
+	UPROPERTY(BlueprintAssignable, Category = "GAS|Attributes")
+	FMessageWidgetRowSignature MessageWidgetRowDelegate;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Widget Data")
+	TObjectPtr<UDataTable> MessageWidgetDataTable;
+
+	template<typename T>
+	T* GetDataTableRowByTag(TObjectPtr<UDataTable> DataTable, const FGameplayTag& Tag);
 };
+
+template<typename T>
+inline T* UOverlayWidgetController::GetDataTableRowByTag(TObjectPtr<UDataTable> DataTable, const FGameplayTag& Tag)
+{
+	if (!DataTable) return nullptr;
+	return DataTable->FindRow<T>(Tag.GetTagName(), TEXT(""));
+}

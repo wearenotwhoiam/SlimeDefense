@@ -21,8 +21,6 @@ ATowerDefenseBaseCharacter::ATowerDefenseBaseCharacter()
 	SkeletalMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Skeletal Mesh"));
 	SkeletalMesh->SetupAttachment(GetRootComponent());
 	SkeletalMesh->SetGenerateOverlapEvents(true);
-
-
 }
 
 UAbilitySystemComponent* ATowerDefenseBaseCharacter::GetAbilitySystemComponent() const

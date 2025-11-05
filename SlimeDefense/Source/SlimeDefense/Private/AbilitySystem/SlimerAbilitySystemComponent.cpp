@@ -4,6 +4,7 @@
 #include "AbilitySystem/SlimerAbilitySystemComponent.h"
 #include "AbilitySystem/Abilities/TowerDefenseGameplayAbility.h"
 #include "DebugHelper.h"
+
 void USlimerAbilitySystemComponent::AbilityActorInfoSet()
 {
 	OnGameplayEffectAppliedDelegateToSelf.AddUObject(this, &ThisClass::EffectApplied);
@@ -39,7 +40,6 @@ void USlimerAbilitySystemComponent::AbilityInputTagHeld(const FGameplayTag& Inpu
 			}
 		}
 	}
-
 }
 
 void USlimerAbilitySystemComponent::AbilityInputTagReleased(const FGameplayTag& InputTag)
@@ -52,7 +52,6 @@ void USlimerAbilitySystemComponent::AbilityInputTagReleased(const FGameplayTag& 
 			AbilitySpecInputReleased(AbilitySpec);
 		}
 	}
-
 }
 
 void USlimerAbilitySystemComponent::EffectApplied(UAbilitySystemComponent* AbilitySystemComponent, const FGameplayEffectSpec& EffectSpec, FActiveGameplayEffectHandle ActiveEffectHandle)
@@ -62,6 +61,4 @@ void USlimerAbilitySystemComponent::EffectApplied(UAbilitySystemComponent* Abili
 	EffectSpec.GetAllAssetTags(TagContainer);
 
 	EffectAssetTags.Broadcast(TagContainer);
-
-
 }

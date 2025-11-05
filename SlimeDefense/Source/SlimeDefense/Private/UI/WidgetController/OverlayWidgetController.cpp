@@ -60,12 +60,17 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 
 	Cast<USlimerAbilitySystemComponent>(AbilitySystemComponent)->EffectAssetTags.AddLambda
 	(
-		[](const FGameplayTagContainer& AssetTags)
+		[this](const FGameplayTagContainer& AssetTags)
 		{
 			for (const FGameplayTag& Tag : AssetTags)
 			{
-				const FString Msg = FString::Printf(TEXT("GE TAG: %s"), *Tag.ToString());
-				Debug::Print(Msg);
+				FGameplayTag MessageTag = FGameplayTag::RequestGameplayTag(FName("Message"));
+				if (Tag.MatchesTag(MessageTag))
+				{
+					FUIWidgetRow* Row = GetDataTableRowByTag<FUIWidgetRow>(MessageWidgetDataTable, Tag);
+					if (!Row) return;
+					MessageWidgetRowDelegate.Broadcast(*Row);
+				}
 			}
 		}
 	);
