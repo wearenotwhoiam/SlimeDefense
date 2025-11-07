@@ -57,7 +57,10 @@ void ATowerDefenseBaseCharacter::ApplyEffectToSelf(TSubclassOf<UGameplayEffect> 
 
 void ATowerDefenseBaseCharacter::InitializeDefaultAttributes() const
 {
-	ApplyEffectToSelf(DefaultSecondaryAttributes, 1);
-	ApplyEffectToSelf(DefaultPrimaryAttributes, 1);
-
+	if (!DefaultPrimaryAttributes) return;
+	ApplyEffectToSelf(DefaultPrimaryAttributes, 1.f);
+	if (!DefaultSecondaryAttributes) return;
+	ApplyEffectToSelf(DefaultSecondaryAttributes, 1.f);
+	if (!DefaultVitalAttributes) return;
+	ApplyEffectToSelf(DefaultVitalAttributes, 1.f);
 }

@@ -51,7 +51,6 @@ public:
 	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
 	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
 
-
 #pragma region PrimaryAttributes
 	UPROPERTY(BlueprintReadOnly, Category = "Primary Attributes")
 	FGameplayAttributeData Strength;
@@ -71,24 +70,56 @@ public:
 
 #pragma endregion
 
-#pragma region VitalStats
-	UPROPERTY(BlueprintReadOnly, Category="VitalStats")
+
+#pragma region SecondaryAttributes
+	UPROPERTY(BlueprintReadOnly, Category = "Secondary Attributes")
+	FGameplayAttributeData Armor;
+	ATTRIBUTE_ACCESSORS(USlimerAttributeSet, Armor)
+
+	UPROPERTY(BlueprintReadOnly, Category = "Secondary Attributes")
+	FGameplayAttributeData ArmorPenetration;
+	ATTRIBUTE_ACCESSORS(USlimerAttributeSet, ArmorPenetration)
+
+	UPROPERTY(BlueprintReadOnly, Category = "Secondary Attributes")
+	FGameplayAttributeData BlockChance;
+	ATTRIBUTE_ACCESSORS(USlimerAttributeSet, BlockChance)
+
+	UPROPERTY(BlueprintReadOnly, Category = "Secondary Attributes")
+	FGameplayAttributeData CriticalHitChance;
+	ATTRIBUTE_ACCESSORS(USlimerAttributeSet, CriticalHitChance)
+
+	UPROPERTY(BlueprintReadOnly, Category = "Secondary Attributes")
+	FGameplayAttributeData CriticalHitDamage;
+	ATTRIBUTE_ACCESSORS(USlimerAttributeSet, CriticalHitDamage)
+
+	UPROPERTY(BlueprintReadOnly, Category = "Secondary Attributes")
+	FGameplayAttributeData CriticalHitResistance;
+	ATTRIBUTE_ACCESSORS(USlimerAttributeSet, CriticalHitResistance)
+
+	UPROPERTY(BlueprintReadOnly, Category = "Secondary Attributes")
+	FGameplayAttributeData HealthRegeneration;
+	ATTRIBUTE_ACCESSORS(USlimerAttributeSet, HealthRegeneration)
+
+	UPROPERTY(BlueprintReadOnly, Category = "Secondary Attributes")
+	FGameplayAttributeData ManaRegeneration;
+	ATTRIBUTE_ACCESSORS(USlimerAttributeSet, ManaRegeneration)
+
+	UPROPERTY(BlueprintReadOnly, Category = "Secondary Attributes")
+	FGameplayAttributeData MaxHealth;
+	ATTRIBUTE_ACCESSORS(USlimerAttributeSet, MaxHealth)
+	UPROPERTY(BlueprintReadOnly, Category = "Secondary Attributes")
+	FGameplayAttributeData MaxMana;
+	ATTRIBUTE_ACCESSORS(USlimerAttributeSet, MaxMana)
+#pragma endregion
+
+#pragma region VitalAttributes
+	UPROPERTY(BlueprintReadOnly, Category="Vital Attributes")
 	FGameplayAttributeData CurrentHealth;
 	ATTRIBUTE_ACCESSORS(USlimerAttributeSet, CurrentHealth)
 
-	UPROPERTY(BlueprintReadOnly, Category = "VitalStats")
+	UPROPERTY(BlueprintReadOnly, Category = "Vital Attributes")
 	FGameplayAttributeData CurrentMana;
 	ATTRIBUTE_ACCESSORS(USlimerAttributeSet, CurrentMana)
-
-#pragma endregion
-
-#pragma region SecondaryStats
-	UPROPERTY(BlueprintReadOnly, Category = "Health")
-	FGameplayAttributeData MaxHealth;
-	ATTRIBUTE_ACCESSORS(USlimerAttributeSet, MaxHealth)
-	UPROPERTY(BlueprintReadOnly, Category = "Mana")
-	FGameplayAttributeData MaxMana;
-	ATTRIBUTE_ACCESSORS(USlimerAttributeSet, MaxMana)
 #pragma endregion
 
 private:
